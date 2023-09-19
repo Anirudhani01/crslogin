@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define structures for vehicles and drivers
+struct Vehicle {
+    int id;
+    char name[50];
+    float price_per_day;
+};
+
+struct Driver {
+    int id;
+    char name[50];
+    char license_number[20];
+};
+
+// Define a structure for user accounts
+struct User {
+    char username[50];
+    char password[50];
+};
+
+// Function to perform user login
+int login(struct User *users, int num_users, char *username, char *password) {
+    for (int i = 0; i < num_users; i++) {
+        if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0) {
+            return i; // Return user index if login successful
+        }
+    }
+    return -1; // Return -1 if login fails
+}
+
+int main() {
+    struct User users[2]; // You can add more users
+    strcpy(users[0].username, "user1");
+    strcpy(users[0].password, "password1");
+    strcpy(users[1].username, "user2");
+    strcpy(users[1].password, "password2");
+    
+    int num_users = 2;
+    int current_user = -1; // Current logged-in user, initially not logged in
+    
+    while (1) {
+        printf("Welcome to the Rental Service\n");
+        printf("1. Login\n");
+        printf("2. Exit\n");
+        printf("Enter your choice: ");
+        
+        int choice;
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                char username[50], password[50];
+                printf("Username: ");
+                scanf("%s", username);
+                printf("Password: ");
+                scanf("%s", password);
+                current_user = login(users, num_users, username, password);
+                if (current_user == -1) {
+                    printf("Login failed. Please try again.\n");
+                } else {
+                    printf("Login successful. Welcome, %s!\n", username);
+                    // Implement the dashboard, booking, vehicle, driver, and payment options here
+                }
+                break;
+            case 2:
+                printf("Exiting the Rental Service. Goodbye!\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+                break;
+        }
+    }
+    
+    return 0;
+}
