@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define structures for vehicles, drivers, and users
+struct Vehicle {
+    int id;
+    char name[50];
+    float price_per_day;
+};
+
+struct Driver {
+    int id;
+    char name[50];
+    char license_number[20];
+};
+
+struct User {
+    char username[50];
+    char password[50];
+};
+
+// Define a structure for admin accounts
+struct Admin {
+    char name[50];
+    int admin_id;
+    char contact_number[15];
+    char gmail_id[50];
+    char gender[10];
+    char password[50]; // Add admin password
+};
+
+// Function to perform user login
+int login(struct User *users, int num_users, char *username, char *password) {
+    for (int i = 0; i < num_users; i++) {
+        if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0) {
+            return i; // Return user index if login successful
+        }
+    }
+    return -1; // Return -1 if login fails
+}
+
+// Function to perform admin login
+int adminLogin(struct Admin *admin, char *username, char *password) {
+    // For simplicity, we assume only one admin here
+    if (strcmp(admin->name, username) == 0 && strcmp(admin->password, password) == 0) {
+        return 1; // Return 1 if admin login successful
+    }
+    return 0; // Return 0 if admin login fails
+}
+
+int main() {
+    struct User users[2]; // You can add more users
+    strcpy(users[0].username, "user1");
+    strcpy(users[0].password, "password1");
+    strcpy(users[1].username, "user2");
+    strcpy(users[1].password, "password2");
+    
+    int num_users = 2;
+    int current_user = -1; // Current logged-in user, initially not logged in
+    
+    struct Admin admin;
+    strcpy(admin.name, "admin");
+    admin.admin_id = 1;
+    strcpy(admin.contact_number, "1234567890");
+    strcpy(admin.gmail_id, "admin@gmail.com");
+    strcpy(admin.gender, "Male");
+    strcpy(admin.password, "adminpassword"); // Set admin password
+    
+    while (1) {
+        printf("Welcome to the Rental Service\n");
+        printf("1. User Login\n");
+        printf("2. Admin Login\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        
+        int choice;
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                char username[50], password[50];
+                printf("Username: ");
+                scanf("%s", username);
+                printf("Password: ");
+                scanf("%s", password);
+                current_user = login(users, num_users, username, password);
+                if (current_user == -1) {
+                    printf("Login failed. Please try again.\n");
+                } else {
+                    printf("Login successful. Welcome, %s!\n", username);
+                    // Implement user dashboard, booking, vehicle, driver, and payment options here
+                }
+                break;
+            case 2:
+                char adminUsername[50], adminPasswordInput[50];
+                printf("Admin Username: ");2
+                
+                scanf("%s", adminUsername);
+                printf("Admin Password: ");
+                scanf("%s", adminPasswordInput);
+                if (adminLogin(&admin, adminUsername, adminPasswordInput)) {
+                    printf("Admin login successful. Welcome, %s!\n", adminUsername);
+                    // Implement admin dashboard and management options here
+                } else {
+                    printf("Admin login failed. Please try again.\n");
+                }
+                break;
+            case 3:
+                printf("Exiting the Rental Service. Goodbye!\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+                break;
+        }
+    }
+    
+    return 0;
+}
